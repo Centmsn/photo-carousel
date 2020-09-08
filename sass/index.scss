@@ -11,6 +11,7 @@
   overflow: hidden;
 
   text-align: center;
+  user-select: none;
 
   &__inner-container {
     position: relative;
@@ -28,7 +29,6 @@
     font-family: "Nanum Gothic", sans-serif;
     transition: transform 300ms;
     background-color: white;
-    user-select: none;
     cursor: pointer;
 
     &:hover {
@@ -53,26 +53,31 @@
   font-family: "Krub", sans-serif;
 
   &--active {
-    // width: 25%;
-    // height: 80%;
-
+    box-shadow: 0 10px 10px 1px rgb(83, 83, 83);
     transform: translateX(0) scale(1.5);
-    visibility: visible;
     opacity: 1;
     z-index: 5;
     background-color: white;
   }
 
-  &--inactive-left {
-    transform: translateX(-25vw);
+  &--inactive-left,
+  &--inactive-right {
     opacity: 1;
     filter: grayscale(1);
+    cursor: pointer;
+  }
+
+  &--inactive-left:hover,
+  &--inactive-right:hover {
+    filter: grayscale(0.5);
+  }
+
+  &--inactive-left {
+    transform: translateX(-25vw);
   }
 
   &--inactive-right {
     transform: translateX(25vw);
-    opacity: 1;
-    filter: grayscale(1);
   }
 
   &__img-container {

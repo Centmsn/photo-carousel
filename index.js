@@ -8,7 +8,6 @@ class Gallery {
   }
 
   renderBanner = () => {
-    //   add listeners to arrows
     const arrows = document.querySelectorAll(".gallery__change-slide");
 
     arrows.forEach((arrow) =>
@@ -16,7 +15,6 @@ class Gallery {
     );
 
     this.renderCards();
-    //
   };
 
   renderCards = () => {
@@ -58,12 +56,18 @@ class Gallery {
     });
 
     document.querySelector(".gallery__inner-container").appendChild(cards);
+    this.displayNewSlide();
   };
 
   changeSlide = () => {
+    const container = document.querySelector(".gallery__inner-container");
+
     if (!this.delay) {
       this.delay = true;
-      if (event.target.dataset.direction === "back") {
+      if (
+        event.target.dataset.direction === "back" ||
+        event.clientX < container.clientWidth / 2
+      ) {
         if (this.activeSlide === 0) {
           this.activeSlide = this.config.length - 1;
         } else {
@@ -85,6 +89,10 @@ class Gallery {
 
   displayNewSlide = () => {
     const cards = document.querySelectorAll(".card");
+    const leftIndex =
+      this.activeSlide - 1 < 0 ? this.config.length - 1 : this.activeSlide - 1;
+    const rightIndex =
+      this.activeSlide + 1 > this.config.length - 1 ? 0 : this.activeSlide + 1;
 
     cards.forEach((card) => {
       card.classList.remove(
@@ -92,15 +100,17 @@ class Gallery {
         "card--inactive-left",
         "card--inactive-right"
       );
+      card.removeEventListener("click", this.changeSlide);
     });
 
-    cards[
-      this.activeSlide - 1 < 0 ? this.config.length - 1 : this.activeSlide - 1
-    ].classList.add("card--inactive-left");
+    // add class and listener to side card
+    cards[leftIndex].classList.add("card--inactive-left");
+    cards[leftIndex].addEventListener("click", this.changeSlide);
+    // add class to active card
     cards[this.activeSlide].classList.add("card--active");
-    cards[
-      this.activeSlide + 1 > this.config.length - 1 ? 0 : this.activeSlide + 1
-    ].classList.add("card--inactive-right");
+    // add class and listener to side card
+    cards[rightIndex].classList.add("card--inactive-right");
+    cards[rightIndex].addEventListener("click", this.changeSlide);
   };
 }
 
