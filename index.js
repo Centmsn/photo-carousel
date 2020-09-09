@@ -8,6 +8,9 @@ class Gallery {
   }
 
   renderBanner = () => {
+    if (this.config.length < 4) {
+      throw new Error("Incorrect number of slides. At least 4 required");
+    }
     const arrows = document.querySelectorAll(".gallery__change-slide");
 
     arrows.forEach((arrow) =>
@@ -64,10 +67,7 @@ class Gallery {
 
     if (!this.delay) {
       this.delay = true;
-      if (
-        event.target.dataset.direction === "back" ||
-        event.clientX < container.clientWidth / 2
-      ) {
+      if (event.clientX < container.clientWidth / 2) {
         if (this.activeSlide === 0) {
           this.activeSlide = this.config.length - 1;
         } else {
@@ -112,6 +112,8 @@ class Gallery {
     cards[rightIndex].classList.add("card--inactive-right");
     cards[rightIndex].addEventListener("click", this.changeSlide);
   };
+
+  // e.clientX z eventu mousedown - e.clientX z eventu mouse move
 }
 
 const gallerySlides = [
@@ -139,11 +141,11 @@ const gallerySlides = [
     desc:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam, atque animi? ",
   },
-  // {
-  //   img: "./assets/pic5.JPG",
-  //   title: "Fifth photo",
-  //   desc: "description5",
-  // },
+  {
+    img: "./assets/pic5.JPG",
+    title: "Fifth photo",
+    desc: "description5",
+  },
 ];
 
 const myGallery = new Gallery(gallerySlides);
